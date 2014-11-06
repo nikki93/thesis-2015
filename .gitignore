@@ -1,2 +1,9 @@
+# vs
+*.opensdf
+*.sdf
+*.suo
+*.vcxproj.filters
+*.vcxproj.user
+
 # powerpoint
 ~$*
