@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\nikki\Development\oculus\OculusSDK-0.4.3\LibOVR\Src;C:\Users\nikki\Development\oculus\OculusSDK-0.4.3\LibOVR\Include;C:\Users\nikki\Development\glew-1.11.0\include;C:\Users\nikki\Development\SDL2-2.0.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>C:\Users\nikki\Development\oculus\OculusSDK-0.4.3\LibOVR\Lib\Win32\VS2013;C:\Users\nikki\Development\glew-1.11.0\lib\Release\Win32;C:\Users\nikki\Development\SDL2-2.0.3\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ws2_32.lib;winmm.lib;sdl2.lib;sdl2main.lib;opengl32.lib;glu32.lib;glew32.lib;libovr.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>
