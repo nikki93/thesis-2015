@@ -1,3 +1,9 @@
+/*
+ * minimal oculus C app
+ *
+ * code mostly from http://nuclear.mutantstargoat.com/hg/oculus2/file/tip
+ */
+
 #include <stdio.h>
 #include <stdbool.h>
 #include <GL/glew.h>
