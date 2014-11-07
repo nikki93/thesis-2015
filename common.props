@@ -6,6 +6,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>$(LIBDIR)\ovr-0.4.3\LibOVR\Src;$(LIBDIR)\ovr-0.4.3\LibOVR\Include;$(LIBDIR)\glew-1.11.0\include;$(LIBDIR)\SDL2-2.0.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(LIBDIR)\ovr-0.4.3\LibOVR\Lib\Win32\VS2013;$(LIBDIR)\glew-1.11.0\lib\Release\Win32;$(LIBDIR)\SDL2-2.0.3\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
