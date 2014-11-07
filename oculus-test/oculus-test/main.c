@@ -230,7 +230,7 @@ static void _vr_draw(void(*drawer)())
         glTranslatef(0, -ovrHmd_GetFloat(hmd, OVR_KEY_EYE_HEIGHT, 1.65), 0);
 
         /* draw! */
-        drawer(eye);
+        drawer();
     }
 
     /* draw onto display */
