@@ -6,6 +6,7 @@
 #include <OVR_CAPI.h>
 #include <OVR_CAPI_GL.h>
 
+#include "maths.h"
 #include "array.h"
 
 static bool quit = false;
@@ -22,16 +23,6 @@ void error(const char *fmt)
 }
 
 
-/* --- types ---------------------------------------------------------------- */
-
-typedef float Scalar;
-
-typedef struct Vec3 Vec3;
-struct Vec3 { Scalar x, y, z; };
-
-#define vec3(x, y, z) ((Vec3) { (x), (y), (z) })
-
-
 /* --- vr ------------------------------------------------------------------- */
 
 static unsigned int fbo = 0, fb_color, fb_depth;  /* target framebuffer */
@@ -42,18 +33,6 @@ static ovrEyeRenderDesc eye_rdesc[2];
 static ovrGLTexture fb_ovr_tex[2];
 static union ovrGLConfig glcfg;
 static unsigned int distort_caps;
-
-/* return 2^i for smallest i such that 2^i >= x */
-static unsigned int _next_pow2(unsigned int x)
-{
-    x -= 1;
-    x |= x >> 1;
-    x |= x >> 2;
-    x |= x >> 4;
-    x |= x >> 8;
-    x |= x >> 16;
-    return x + 1;
-}
 
 /* resize vr framebuffer, creating if doesn't exist */
 static void _vr_update_fb()
@@ -171,28 +150,6 @@ static void _vr_deinit()
     if (hmd)
         ovrHmd_Destroy(hmd);
     ovr_Shutdown();
-}
-
-/* convert quaternion to rotation matrix */
-static void _quat_to_matrix(const float *quat, float *mat)
-{
-    mat[0] = 1.0 - 2.0 * quat[1] * quat[1] - 2.0 * quat[2] * quat[2];
-    mat[4] = 2.0 * quat[0] * quat[1] + 2.0 * quat[3] * quat[2];
-    mat[8] = 2.0 * quat[2] * quat[0] - 2.0 * quat[3] * quat[1];
-    mat[12] = 0.0f;
-
-    mat[1] = 2.0 * quat[0] * quat[1] - 2.0 * quat[3] * quat[2];
-    mat[5] = 1.0 - 2.0 * quat[0] * quat[0] - 2.0 * quat[2] * quat[2];
-    mat[9] = 2.0 * quat[1] * quat[2] + 2.0 * quat[3] * quat[0];
-    mat[13] = 0.0f;
-
-    mat[2] = 2.0 * quat[2] * quat[0] + 2.0 * quat[3] * quat[1];
-    mat[6] = 2.0 * quat[1] * quat[2] - 2.0 * quat[3] * quat[0];
-    mat[10] = 1.0 - 2.0 * quat[0] * quat[0] - 2.0 * quat[1] * quat[1];
-    mat[14] = 0.0f;
-
-    mat[3] = mat[7] = mat[11] = 0.0f;
-    mat[15] = 1.0f;
 }
 
 /* draw per-eye, calling the given draw callback */
