@@ -373,9 +373,26 @@ static void _main_events()
     }
 }
 
+static void _main_update_fps()
+{
+    static int nframes = 0;
+    static Uint32 last = 0;
+    Uint32 curr;
+
+    ++nframes;
+    curr = SDL_GetTicks();
+    Scalar elapsed = 0.001 * (curr - last);
+    if (elapsed >= 5)
+    {
+        printf("fps: %f\n", nframes / elapsed);
+        nframes = 0;
+        last = curr;
+    }
+}
+
 static void _main_update()
 {
-
+    _main_update_fps();
 }
 
 static void _main_draw()
