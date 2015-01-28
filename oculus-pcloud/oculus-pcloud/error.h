@@ -1,3 +1,6 @@
+#ifndef ERROR_H
+#define ERROR_H
+
 /* printf-style error formatting */
 void errorf(const char *fmt, ...);
 
@@ -17,3 +20,4 @@ void errorf(const char *fmt, ...);
 #define error_assert(cond, ...)                         \
     ((cond) ? 0: error("assertion '" #cond "' failed ... " __VA_ARGS__))
 
+#endif

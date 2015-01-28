@@ -1,3 +1,6 @@
+#ifndef MATHS_H
+#define MATHS_H
+
 /* --- Scalar --------------------------------------------------------------- */
 
 typedef float Scalar;
@@ -47,3 +50,4 @@ static void _quat_to_matrix(const Scalar *quat, Scalar *mat)
     mat[15] = 1.0f;
 }
 
+#endif
