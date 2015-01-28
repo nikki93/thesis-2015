@@ -16,7 +16,7 @@ char **main_argv;
 
 static bool quit = false; /* iff true, quit */
 
-static void _main_init()
+static void _main_init(void)
 {
     vr_preinit();
 
@@ -48,7 +48,7 @@ static void _main_init()
     glClearColor(0.1f, 0.1f, 0.1f, 1);
 }
 
-static void _main_deinit()
+static void _main_deinit(void)
 {
     /* deinit scene, vr */
     scene_deinit();
@@ -58,7 +58,7 @@ static void _main_deinit()
     SDL_Quit();
 }
 
-static void _main_events()
+static void _main_events(void)
 {
     SDL_Event ev;
 
@@ -86,7 +86,7 @@ static void _main_events()
     }
 }
 
-static void _main_update_fps()
+static void _main_update_fps(void)
 {
     static int nframes = 0;
     static Uint32 last = 0;
@@ -103,12 +103,12 @@ static void _main_update_fps()
     }
 }
 
-static void _main_update()
+static void _main_update(void)
 {
     _main_update_fps();
 }
 
-static void _main_draw()
+static void _main_draw(void)
 {
     vr_draw(scene_draw);
 }
@@ -130,4 +130,5 @@ int main(int argc, char **argv)
     _main_deinit();
     return 0;
 }
+
 

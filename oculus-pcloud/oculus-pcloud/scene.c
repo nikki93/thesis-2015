@@ -12,7 +12,7 @@ static Array *points; /* the points to show */
 #define DEFAULT_SCENE_PATH \
     "../../urban_scenes_velodyne/urban_scenes_velodyne/scene-1"
 
-void scene_init()
+void scene_init(void)
 {
     FILE *f;
     char dummy1[256], dummy2[256];
@@ -27,12 +27,12 @@ void scene_init()
             array_add_val(Vec3, points) = vec3(point.x, point.z, -point.y);
 }
 
-void scene_deinit()
+void scene_deinit(void)
 {
     array_free(points);
 }
 
-void scene_draw()
+void scene_draw(void)
 {
     unsigned int i, npoints;
     float gray[] = { 0.8f, 0.8f, 0.8f, 1 };

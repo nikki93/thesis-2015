@@ -1,4 +1,4 @@
-void scene_init();
-void scene_deinit();
+void scene_init(void);
+void scene_deinit(void);
 void scene_draw(void);
 

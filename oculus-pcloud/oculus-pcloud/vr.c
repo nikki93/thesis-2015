@@ -20,7 +20,7 @@ static ovrGLTexture fb_ovr_tex[2];
 static union ovrGLConfig glcfg;
 static unsigned int distort_caps;
 
-void vr_recenter()
+void vr_recenter(void)
 {
     ovrHmd_RecenterPose(hmd);
 }
@@ -28,13 +28,13 @@ void vr_recenter()
 
 /* -------------------------------------------------------------------------- */
 
-void vr_preinit()
+void vr_preinit(void)
 {
     ovr_Initialize(); /* must be done before creating OpenGL context */
 }
 
 /* resize vr framebuffer, creating if doesn't exist */
-static void _vr_update_fb()
+static void _vr_update_fb(void)
 {
     unsigned int i;
 
@@ -88,7 +88,7 @@ static void _vr_update_fb()
 }
 
 /* init all vr stuff */
-void vr_init()
+void vr_init(void)
 {
     ovrSizei eye_res[2];
 
@@ -144,7 +144,7 @@ void vr_init()
 }
 
 /* deinit all vr stuff */
-void vr_deinit()
+void vr_deinit(void)
 {
     if (hmd)
         ovrHmd_Destroy(hmd);
