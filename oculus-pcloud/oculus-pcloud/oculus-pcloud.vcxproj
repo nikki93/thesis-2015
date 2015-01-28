@@ -67,6 +67,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="array.c" />
+    <ClCompile Include="ds.cpp" />
     <ClCompile Include="error.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="scene.c" />
@@ -74,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="array.h" />
+    <ClInclude Include="ds.h" />
     <ClInclude Include="error.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="maths.h" />

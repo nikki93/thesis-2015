@@ -8,6 +8,7 @@
 #include "maths.h"
 #include "error.h"
 #include "vr.h"
+#include "ds.h"
 #include "scene.h"
 
 SDL_Window *main_window;
@@ -34,8 +35,9 @@ static void _main_init(void)
     /* init GLEW */
     glewInit();
 
-    /* init vr, scene */
+    /* init vr, ds, scene */
     vr_init();
+    ds_init();
     scene_init();
 
     /* some GL settings */
@@ -50,8 +52,9 @@ static void _main_init(void)
 
 static void _main_deinit(void)
 {
-    /* deinit scene, vr */
+    /* deinit scene, ds, vr */
     scene_deinit();
+    ds_deinit();
     vr_deinit();
 
     /* deinit SDL */
@@ -106,6 +109,8 @@ static void _main_update_fps(void)
 static void _main_update(void)
 {
     _main_update_fps();
+
+    ds_update();
 }
 
 static void _main_draw(void)
