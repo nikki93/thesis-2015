@@ -11,7 +11,14 @@ typedef float Scalar;
 typedef struct Vec3 Vec3;
 struct Vec3 { Scalar x, y, z; };
 
-#define vec3(x, y, z) ((Vec3) { (x), (y), (z) })
+static Vec3 vec3(Scalar x, Scalar y, Scalar z)
+{
+    Vec3 v;
+    v.x = x;
+    v.y = y;
+    v.z = z;
+    return v;
+}
 
 
 /* --- utils ---------------------------------------------------------------- */
