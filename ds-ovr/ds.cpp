@@ -15,7 +15,7 @@ DS::DS() :
     // configure core Z-from-stereo capabilities
     error_assert(m_api->enableZ(true));
     error_assert(m_api->enableLeft(true));
-    error_assert(m_api->enableRight(false));
+    error_assert(m_api->enableRight(true));
     error_assert(m_api->setLRZResolutionMode(true, 480, 360, 60, DS_LUMINANCE8));
     m_api->enableLRCrop(true);
 
