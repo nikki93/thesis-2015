@@ -82,15 +82,21 @@ VR::~VR()
 
 void VR::draw(const std::function<void()>& drawer) const
 {
-    ovrPosef pose[2];
-
-    ovrHmd_BeginFrame(m_hmd, 0);
-
     // draw onto our framebuffer, clearing it first
     glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    // get pose data
+    ovrPosef pose[2];
+    ovrVector3f eye_offset[2] =
+    {
+        m_eye_rdesc[0].HmdToEyeViewOffset,
+        m_eye_rdesc[1].HmdToEyeViewOffset,
+    };
+    ovrHmd_GetEyePoses(m_hmd, 0, eye_offset, pose, nullptr);
+
     // per-eye
+    ovrHmd_BeginFrame(m_hmd, 0);
     for (auto i = 0; i < 2; ++i)
     {
         auto eye = m_hmd->EyeRenderOrder[i];
@@ -106,12 +112,9 @@ void VR::draw(const std::function<void()>& drawer) const
         glLoadTransposeMatrixf(&proj.M[0][0]); // GL uses column-major
 
         // view transform: use OVR's eye position, orientation
-        pose[eye] = ovrHmd_GetHmdPosePerEye(m_hmd, eye); // TODO: deprecated
+        // orientation * -translation * -eye_height
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        glTranslatef(m_eye_rdesc[eye].HmdToEyeViewOffset.x,
-            m_eye_rdesc[eye].HmdToEyeViewOffset.y,
-            m_eye_rdesc[eye].HmdToEyeViewOffset.z);
         float rot_mat[16];
         quat_to_matrix(&pose[eye].Orientation.x, rot_mat);
         glMultMatrixf(rot_mat);
