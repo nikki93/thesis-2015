@@ -17,7 +17,10 @@ int main(int argc, char **argv)
         Scene scene;
         DS ds;
 
-        game.loop([&](){},
+        game.loop([&]()
+        {
+            scene.update();
+        },
                   [&]()
         {
             auto points = ds.points();
