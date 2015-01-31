@@ -42,7 +42,7 @@ DS::~DS()
     DSDestroy(m_api);
 }
 
-const std::vector<Vec3> &DS::points()
+const std::vector<vec3> &DS::points()
 {
     error_assert(m_api->grab());
     DSCalibIntrinsicsRectified z_intrin;
@@ -58,11 +58,11 @@ const std::vector<Vec3> &DS::points()
             {
                 float z_img[]{ i, j, d }, z_camera[3];
                 DSTransformFromZImageToZCamera(z_intrin, z_img, z_camera);
-                m_points.push_back(Vec3{
+                m_points.push_back(vec3(
                     z_camera[0] / 400,
                     -z_camera[1] / 300 + 1,
                     -z_camera[2] / 300 - 0.2f
-                });
+                    ));
             }
     return m_points;
 }

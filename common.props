@@ -5,7 +5,7 @@
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(LIBDIR)\ovr-0.4.3\LibOVR\Src;$(LIBDIR)\ovr-0.4.3\LibOVR\Include;$(LIBDIR)\glew-1.11.0\include;$(LIBDIR)\SDL2-2.0.3\include;$(DSROOT)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(LIBDIR)\ovr-0.4.3\LibOVR\Src;$(LIBDIR)\ovr-0.4.3\LibOVR\Include;$(LIBDIR)\glew-1.11.0\include;$(LIBDIR)\SDL2-2.0.3\include;$(DSROOT)\Include;$(LIBDIR)\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>

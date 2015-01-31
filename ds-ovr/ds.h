@@ -12,12 +12,12 @@ public:
     DS();
     ~DS();
 
-    const std::vector<Vec3> &points();
+    const std::vector<vec3> &points();
 
 private:
     DSAPI *m_api;
     DSThird *m_third;
-    std::vector<Vec3> m_points;
+    std::vector<vec3> m_points;
 };
 
 #endif

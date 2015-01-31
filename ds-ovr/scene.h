@@ -11,13 +11,13 @@ class Scene
 {
 public:
     void update(void);
-    void draw(const std::vector<Vec3> &points);
+    void draw(const std::vector<vec3> &points);
 
 private:
-    Scalar m_yaw = 0;
-    Scalar m_pitch = 0;
-    Scalar m_dist = 1;
-    Vec3 m_prev_mouse;
+    float m_yaw = 0;
+    float m_pitch = 0;
+    float m_dist = 1;
+    vec2 m_prev_mouse;
 };
 
 #endif

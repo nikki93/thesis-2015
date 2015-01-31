@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <SDL.h>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "error.h"
 #include "game.h"
@@ -10,6 +11,16 @@
 extern "C"
 {
     void ovrhmd_EnableHSWDisplaySDKRender(ovrHmd hmd, ovrBool enable);
+}
+
+inline quat convert(const ovrQuatf &rot)
+{
+    return quat(rot.w, rot.x, rot.y, rot.z);
+}
+
+inline vec3 convert(const ovrVector3f &v)
+{
+    return vec3(v.x, v.y, v.z);
 }
 
 void VR::preinit()
@@ -111,17 +122,13 @@ void VR::draw(const std::function<void()>& drawer) const
         glMatrixMode(GL_PROJECTION);
         glLoadTransposeMatrixf(&proj.M[0][0]); // GL uses column-major
 
-        // view transform: use OVR's eye position, orientation
-        // orientation * -translation * -eye_height
+        // view transform: use OVR's eye position, height, orientation
+        auto view = inverse(translate(mat4(), convert(pose[eye].Position)
+            + vec3(0, ovrHmd_GetFloat(m_hmd, OVR_KEY_EYE_HEIGHT, 1.65f), 0))
+            * mat4_cast(convert(pose[eye].Orientation)));
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        float rot_mat[16];
-        quat_to_matrix(&pose[eye].Orientation.x, rot_mat);
-        glMultMatrixf(rot_mat);
-        glTranslatef(-pose[eye].Position.x,
-            -pose[eye].Position.y,
-            -pose[eye].Position.z);
-        glTranslatef(0, -ovrHmd_GetFloat(m_hmd, OVR_KEY_EYE_HEIGHT, 1.65f), 0);
+        glLoadMatrixf(value_ptr(view));
 
         // draw!
         drawer();

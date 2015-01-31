@@ -15,10 +15,10 @@ void Scene::update(void)
     }
     if (state & SDL_BUTTON_MMASK)
         m_dist += 0.05f * (y - m_prev_mouse.y);
-    m_prev_mouse = Vec3{ x, y };
+    m_prev_mouse = vec2(x, y);
 }
 
-void Scene::draw(const std::vector<Vec3>& points)
+void Scene::draw(const std::vector<vec3>& points)
 {
     glMatrixMode(GL_MODELVIEW);
 
@@ -39,8 +39,8 @@ void Scene::draw(const std::vector<Vec3>& points)
 
     // points
     glBegin(GL_POINTS);
-    for (std::vector<Vec3>::const_iterator point = points.begin();
+    for (std::vector<vec3>::const_iterator point = points.begin();
          point != points.end(); ++point)
-         glVertex3fv(point->gl());
+         glVertex3fv(value_ptr(*point));
     glEnd();
 }
