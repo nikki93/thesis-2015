@@ -59,9 +59,9 @@ const std::vector<vec3> &DS::points()
                 float z_img[]{ i, j, d }, z_camera[3];
                 DSTransformFromZImageToZCamera(z_intrin, z_img, z_camera);
                 m_points.push_back(vec3(
-                    z_camera[0] / 400,
-                    -z_camera[1] / 300 + 1,
-                    -z_camera[2] / 300 - 0.2f
+                    z_camera[0] / 360,
+                    -z_camera[1] / 360,
+                    -z_camera[2] / 360
                     ));
             }
     return m_points;
