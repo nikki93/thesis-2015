@@ -97,16 +97,9 @@ void VR::draw(const std::function<void()>& drawer) const
     glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // get pose data
+    // render per-eye
     ovrPosef pose[2];
-    ovrVector3f eye_offset[2] =
-    {
-        m_eye_rdesc[0].HmdToEyeViewOffset,
-        m_eye_rdesc[1].HmdToEyeViewOffset,
-    };
-    ovrHmd_GetEyePoses(m_hmd, 0, eye_offset, pose, nullptr);
-
-    // per-eye
+    auto eye_trans = eye_transforms(pose);
     ovrHmd_BeginFrame(m_hmd, 0);
     for (auto i = 0; i < 2; ++i)
     {
@@ -122,10 +115,8 @@ void VR::draw(const std::function<void()>& drawer) const
         glMatrixMode(GL_PROJECTION);
         glLoadTransposeMatrixf(&proj.M[0][0]); // GL uses column-major
 
-        // view transform: use OVR's eye position, height, orientation
-        auto view = inverse(translate(mat4(), convert(pose[eye].Position)
-            + vec3(0, ovrHmd_GetFloat(m_hmd, OVR_KEY_EYE_HEIGHT, 1.65f), 0))
-            * mat4_cast(convert(pose[eye].Orientation)));
+        // view transform: use inverse eye transform
+        auto view = inverse(eye_trans[eye]);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         glLoadMatrixf(value_ptr(view));
@@ -193,3 +184,39 @@ void VR::update_fb()
     }
 }
 
+std::array<mat4, 2> VR::eye_transforms(bool mid) const
+{
+    ovrPosef pose[2];
+    return eye_transforms(pose, mid);
+}
+
+std::array<mat4, 2> VR::eye_transforms(ovrPosef pose[2], bool mid) const
+{
+    ovrVector3f eye_offset[2] =
+    {
+        m_eye_rdesc[0].HmdToEyeViewOffset,
+        m_eye_rdesc[1].HmdToEyeViewOffset,
+    };
+
+    // 'mid eye'? use midpoint
+    if (mid)
+    {
+        eye_offset[0].x = eye_offset[1].x =
+            0.5f * (eye_offset[0].x + eye_offset[1].x);
+        eye_offset[0].y = eye_offset[1].y =
+            0.5f * (eye_offset[0].y + eye_offset[1].y);
+        eye_offset[0].z = eye_offset[1].z =
+            0.5f * (eye_offset[0].z + eye_offset[1].z);
+    }
+
+    ovrHmd_GetEyePoses(m_hmd, 0, eye_offset, pose, nullptr);
+    return
+    {
+        {
+            translate(mat4(), convert(pose[0].Position))
+            * mat4_cast(convert(pose[0].Orientation)),
+            translate(mat4(), convert(pose[1].Position))
+            * mat4_cast(convert(pose[1].Orientation))
+        }
+    };
+}
