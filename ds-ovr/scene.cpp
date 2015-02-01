@@ -18,7 +18,7 @@ void Scene::update(void)
     m_prev_mouse = vec2(x, y);
 }
 
-void Scene::draw(const std::vector<vec3>& points)
+void Scene::draw(const std::vector<vec3>& points, const VR &vr)
 {
     glMatrixMode(GL_MODELVIEW);
 
@@ -37,10 +37,12 @@ void Scene::draw(const std::vector<vec3>& points)
         glLightfv(GL_LIGHT0 + i, GL_DIFFUSE, lcol[i]);
     }
 
-    // points
+    // draw points at their world position
+    auto eye_trans = vr.eye_transforms(true)[0];
+    glMultMatrixf(value_ptr(eye_trans));
     glBegin(GL_POINTS);
     for (std::vector<vec3>::const_iterator point = points.begin();
          point != points.end(); ++point)
-         glVertex3fv(value_ptr(*point));
+        glVertex3fv(value_ptr(*point));
     glEnd();
 }

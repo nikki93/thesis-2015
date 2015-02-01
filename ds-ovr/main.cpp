@@ -24,7 +24,7 @@ int main(int argc, char **argv)
                   [&]()
         {
             auto points = ds.points();
-            vr.draw([&]() { scene.draw(points); });
+            vr.draw([&]() { scene.draw(points, vr); });
         });
     }
     catch (std::exception &e)

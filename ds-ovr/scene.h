@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "maths.h"
+#include "vr.h"
 
 class Game;
 
@@ -11,7 +12,7 @@ class Scene
 {
 public:
     void update(void);
-    void draw(const std::vector<vec3> &points);
+    void draw(const std::vector<vec3> &points, const VR &vr);
 
 private:
     float m_yaw = 0;
