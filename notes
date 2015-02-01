@@ -1,6 +1,12 @@
 ideas
 -----
 
+- add VR::getViewMatrix function to get the current view matrix at either the
+  left or right eye or their midpoint -- can then apply to point cloud data to
+  put it in the right place.
+
+- read and use color info from camera
+
 - rendering with VBOs/VAOs, core profile and shaders
 
 - each scan goes into a 'Scan' structure, each with its own texture and VBO,
