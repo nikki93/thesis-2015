@@ -1,8 +1,6 @@
 ideas
 -----
 
-- integrate GLM library
-
 - rendering with VBOs/VAOs, core profile and shaders
 
 - each scan goes into a 'Scan' structure, each with its own texture and VBO,
