@@ -16,7 +16,7 @@ public:
 private:
     float m_yaw = 0;
     float m_pitch = 0;
-    float m_dist = 1;
+    float m_dist = 2;
     vec2 m_prev_mouse;
 };
 
