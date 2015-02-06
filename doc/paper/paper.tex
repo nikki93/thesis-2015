@@ -113,7 +113,7 @@ $x$ axis pointing right and the $y$ axis pointing up, in a frame that looks
 implementation, there are no scene elements other than the point cloud
 itself. The scene can be rotated and zoomed in and out of with the mouse. The
 |Scene::update()| function must be called every update to handle mouse
-events. The |Scene::draw(points, vr)| draws the point cloud, taking the array of
+events. |Scene::draw(points, vr)| draws the point cloud, taking the array of
 points |points| and the current |VR| instance |vr|. The |VR| instance is
 required so that the points can be placed in their correct world-space position
 using the `mid' eye camera matrix returned by |VR::eye_transforms()|. Since the
