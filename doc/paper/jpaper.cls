@@ -124,7 +124,6 @@
 % Settings for figures and tables. Figure captions are placed below the figure,
 % while table captions are placed above the table. All captions are sans-serif.
 \RequirePackage[font={normalsize,sf,bf}]{caption}
-\RequirePackage[position=bottom]{subfig}
 \captionsetup[table]{aboveskip=0.5em, belowskip=0.5em}
 \captionsetup[figure]{aboveskip=0.5em, belowskip=0em}
 \captionsetup[subfloat]{font={small,sf}}
