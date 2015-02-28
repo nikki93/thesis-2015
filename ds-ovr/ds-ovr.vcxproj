@@ -73,10 +73,12 @@
     <ClCompile Include="vr.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cloud.h" />
     <ClInclude Include="ds.h" />
     <ClInclude Include="error.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="maths.h" />
+    <ClInclude Include="point.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="vr.h" />
   </ItemGroup>

@@ -2,9 +2,9 @@
 #define DS_H
 
 #include <DSAPI.h>
-#include <vector>
 
-#include "maths.h"
+#include "cloud.h"
+#include "vr.h"
 
 class DS
 {
@@ -12,12 +12,11 @@ public:
     DS();
     ~DS();
 
-    const std::vector<vec3> &points();
+    Cloud cloud(const VR &vr);
 
 private:
     DSAPI *m_api;
     DSThird *m_third;
-    std::vector<vec3> m_points;
 };
 
 #endif

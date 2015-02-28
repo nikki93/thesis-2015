@@ -23,8 +23,8 @@ int main(int argc, char **argv)
         },
                   [&]()
         {
-            auto points = ds.points();
-            vr.draw([&]() { scene.draw(points, vr); });
+            auto cloud = ds.cloud(vr);
+            vr.draw([&]() { scene.draw(cloud); });
         });
     }
     catch (std::exception &e)

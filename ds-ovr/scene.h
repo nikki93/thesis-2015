@@ -1,10 +1,8 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include <vector>
-
 #include "maths.h"
-#include "vr.h"
+#include "cloud.h"
 
 class Game;
 
@@ -12,7 +10,7 @@ class Scene
 {
 public:
     void update(void);
-    void draw(const std::vector<vec3> &points, const VR &vr);
+    void draw(const Cloud &cloud);
 
 private:
     float m_yaw = 0;

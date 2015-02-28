@@ -42,7 +42,7 @@ DS::~DS()
     DSDestroy(m_api);
 }
 
-const std::vector<vec3> &DS::points()
+Cloud DS::cloud(const VR &vr)
 {
     error_assert(m_api->grab());
     DSCalibIntrinsicsRectified z_intrin;
@@ -50,19 +50,19 @@ const std::vector<vec3> &DS::points()
     auto img = m_api->getZImage();
     auto width = m_api->zWidth(), height = m_api->zHeight();
 
-    m_points.clear();
-    m_points.reserve(width * height);
+    Cloud cloud(vr.eye_transforms(true)[0]);
+    cloud.reserve(width * height);
     for (float j = 0; j < height; ++j)
         for (float i = 0; i < width; ++i)
             if (auto d = *img++)
             {
                 float z_img[]{ i, j, d }, z_camera[3];
                 DSTransformFromZImageToZCamera(z_intrin, z_img, z_camera);
-                m_points.push_back(vec3(
+                cloud.add(Point(vec3(
                     z_camera[0] / 360,
                     -z_camera[1] / 360,
                     -z_camera[2] / 360
-                    ));
+                    )));
             }
-    return m_points;
+    return cloud;
 }
