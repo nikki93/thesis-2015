@@ -37,14 +37,6 @@
   of multiple scans at interactive speeds.
 \end{abstract}
 
-\section{Introduction}
-
-\ldots
-
-\section{Related Work}
-
-\ldots
-
 \section{Methodology}
 
 \subsection{Live point cloud view}
@@ -242,13 +234,14 @@ image.
 Adding color capture would involve very minimal effort and could be accomplished
 within the span of a couple days and at most one week.
 
-\subsection{Research more related work}
+\subsection{Evaluate related work}
 
 This paper has focused more on approach and implementation than related work in
-the field. Some of the related work includes Kintinuous (which extends the
-registration features of Kinect cameras to much larger spaces) and AR-Rift
+the field. Some of the related work studied includes Kintinuous (which extends
+the registration features of Kinect cameras to much larger spaces) and AR-Rift
 (which displays first person video of the real world in Oculus Rift and allows
-augmented reality interaction). 
+augmented reality interaction). A section with an in-depth evaluation of and
+comparison with existing methods would greatly benefit the paper.
 
 \subsection{Interactive registration interface}
 
@@ -273,7 +266,7 @@ then be rendered with a shader that takes the texture and the eye matrix of the
 camera in world space when it was captured, using the texture for color and the
 matrix to place the points in world space.
 
-\subsection{Incorporate registration algorithms}
+\subsection{Automatic registration algorithms}
 
 The head-mounted display provides position and orientation information for the
 camera, but another way to locate point clouds relative to each other is to
@@ -284,13 +277,13 @@ This can help avoid drift issues arising from inaccurate tracking of the
 head-mounted display or of incorrectly measuring the position of the depth
 camera relative to the origin of the head-mounted display. Another reason such a
 technique is desirable is that the head-mounted display can be moved outside the
-range of the infrared capture camera and the camera positions estimated by such
-an algorithm can then be used to track it. This could open the way for free
-capture of multiple rooms of a building, for example.
+range of its IR camera and the camera positions estimated by such an algorithm
+can then be used to track it. This could open the way for free capture of
+multiple rooms of a building, for example.
 
-\bstctlcite{bstctl:etal, bstctl:nodash, bstctl:simpurl}
-\bibliographystyle{IEEEtranS}
-\bibliography{references}
+% \bstctlcite{bstctl:etal, bstctl:nodash, bstctl:simpurl}
+% \bibliographystyle{IEEEtranS}
+% \bibliography{references}
 
 \end{document}
 
