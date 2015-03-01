@@ -21,10 +21,27 @@ int main(int argc, char **argv)
         {
             scene.update();
         },
-                  [&]()
+            [&]()
         {
             auto cloud = ds.cloud(vr);
             vr.draw([&]() { scene.draw(cloud); });
+        },
+            [&](const SDL_Event &ev)
+        {
+            switch (ev.type)
+            {
+            case SDL_KEYDOWN: case SDL_KEYUP:
+                switch (ev.key.keysym.sym)
+                {
+                case SDLK_SPACE: case SDLK_r:
+                    vr.recenter();
+                    break;
+
+                case SDLK_c:
+                    scene.add_cloud(ds.cloud(vr));
+                    break;
+                }
+            }
         });
     }
     catch (std::exception &e)

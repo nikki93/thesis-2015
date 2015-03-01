@@ -1,6 +1,7 @@
 #ifndef DS_H
 #define DS_H
 
+#include <memory>
 #include <DSAPI.h>
 
 #include "cloud.h"
@@ -12,7 +13,7 @@ public:
     DS();
     ~DS();
 
-    Cloud cloud(const VR &vr);
+    std::shared_ptr<Cloud> cloud(const VR &vr);
 
 private:
     DSAPI *m_api;

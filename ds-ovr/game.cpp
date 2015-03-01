@@ -5,6 +5,9 @@
 #include <SDL.h>
 
 #include "error.h"
+#include "vr.h"
+#include "ds.h"
+#include "scene.h"
 
 Game::Game(int argc, char **argv) :
     m_argc(argc), m_argv(argv)
@@ -26,9 +29,6 @@ Game::Game(int argc, char **argv) :
     // GL settings
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_LIGHT1);
     glEnable(GL_NORMALIZE);
     glClearColor(0.1f, 0.1f, 0.1f, 1);
 }
@@ -40,11 +40,12 @@ Game::~Game()
 }
 
 void Game::loop(const std::function<void(void)> &update,
-                const std::function<void(void)> &draw)
+                const std::function<void(void)> &draw,
+                const std::function<void(const SDL_Event &)> &ev)
 {
     while (!m_quit)
     {
-        events();
+        events(ev);
 
         update();
         update_fps();
@@ -54,7 +55,7 @@ void Game::loop(const std::function<void(void)> &update,
 }
 
 
-void Game::events()
+void Game::events(const std::function<void(const SDL_Event &)> &handler)
 {
     SDL_Event ev;
 
@@ -72,13 +73,11 @@ void Game::events()
             case SDLK_ESCAPE:
                 quit();
                 break;
-
-            case SDLK_SPACE: case SDLK_r:
-                // TODO: recenter VR
-                break;
             }
             break;
         }
+
+        handler(ev);
     }
 }
 

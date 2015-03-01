@@ -4,6 +4,7 @@
 #include <functional>
 #include <SDL.h>
 
+class DS;
 class VR;
 class Scene;
 
@@ -13,9 +14,10 @@ public:
     Game(int argc, char **argv);
     ~Game();
 
-    // run game, calling update and draw callbacks
+    // run game, calling event handlers
     void loop(const std::function<void(void)> &update,
-              const std::function<void(void)> &draw);
+              const std::function<void(void)> &draw,
+              const std::function<void(const SDL_Event &)> &ev);
 
     inline void quit(void) { m_quit = true; }
     inline SDL_Window *window(void) const { return m_window; }
@@ -23,7 +25,7 @@ public:
     inline char **argv(void) const { return m_argv; }
 
 private:
-    void events(void);
+    void events(const std::function<void(const SDL_Event &)> &handler);
     void update_fps(void);
 
     SDL_Window *m_window = nullptr;
