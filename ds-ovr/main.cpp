@@ -5,6 +5,53 @@
 #include "vr.h"
 #include "scene.h"
 #include "ds.h"
+#include "cloud.h"
+
+static bool update_offset()
+{
+    auto state = SDL_GetKeyboardState(nullptr);
+    float amount = 0.001;
+
+    if (state[SDL_SCANCODE_LCTRL])
+        amount *= 5;
+
+    if (state[SDL_SCANCODE_W])
+    {
+        Cloud::offset += vec3(0, 0, -amount);
+        return true;
+    }
+    if (state[SDL_SCANCODE_S])
+    {
+        Cloud::offset += vec3(0, 0,  amount);
+        return true;
+    }
+    if (state[SDL_SCANCODE_A])
+    {
+        Cloud::offset += vec3( amount, 0, 0);
+        return true;
+    }
+    if (state[SDL_SCANCODE_D])
+    {
+        Cloud::offset += vec3(-amount, 0, 0);
+        return true;
+    }
+    if (state[SDL_SCANCODE_R])
+    {
+        Cloud::offset += vec3(0,  amount, 0);
+        return true;
+    }
+    if (state[SDL_SCANCODE_F])
+    {
+        Cloud::offset += vec3(0, -amount, 0);
+        return true;
+    }
+    if (state[SDL_SCANCODE_X])
+    {
+        Cloud::offset = vec3(0, 0, 0);
+        return true;
+    }
+    return false;
+}
 
 int main(int argc, char **argv)
 {
@@ -20,6 +67,9 @@ int main(int argc, char **argv)
         game.loop([&]()
         {
             scene.update();
+            if (update_offset())
+                std::cout << "offset: " << Cloud::offset.x << ", "
+                << Cloud::offset.y << ", " << Cloud::offset.z << std::endl;
         },
             [&]()
         {
@@ -33,7 +83,7 @@ int main(int argc, char **argv)
             case SDL_KEYDOWN: case SDL_KEYUP:
                 switch (ev.key.keysym.sym)
                 {
-                case SDLK_SPACE: case SDLK_r:
+                case SDLK_SPACE:
                     vr.recenter();
                     break;
 

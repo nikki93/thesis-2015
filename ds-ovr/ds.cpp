@@ -1,6 +1,7 @@
 #include "ds.h"
 
 #include <DSAPIUtil.h>
+#include <glm/gtc/matrix_transform.inl>
 
 #include "error.h"
 
@@ -53,7 +54,12 @@ std::shared_ptr<Cloud> DS::cloud(const VR &vr)
     auto img = m_api->getZImage();
     auto width = m_api->zWidth(), height = m_api->zHeight();
 
-    auto cloud = std::make_shared<Cloud>(vr.eye_transforms(true)[0]);
+    // camera is offset from actual mid-eye by a bit
+    //auto trans = translate(mat4(), vec3(0, 0, -5))
+    //    * vr.eye_transforms(true)[0];
+    auto trans = translate(vr.eye_transforms(true)[0], vec3(0, 0, 0));
+
+    auto cloud = std::make_shared<Cloud>(trans);
     cloud->reserve(width * height);
     cloud->set_texture_data(m_third->thirdWidth(), m_third->thirdHeight(),
                            m_third->getThirdImage());
