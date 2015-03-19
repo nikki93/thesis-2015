@@ -66,6 +66,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cloud.cpp" />
     <ClCompile Include="ds.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
