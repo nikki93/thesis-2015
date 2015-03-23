@@ -5,8 +5,8 @@
 vec3 Cloud::offset = vec3(0, 0, -0.49);
 vec3 Cloud::scale = vec3(1, 1, 1);
 
-Cloud::Cloud(const mat4 &trans)
-    : dlist(0), dlist_dirty(true), transform(trans)
+Cloud::Cloud()
+    : dlist(0), dlist_dirty(true), points(new pcl::PointCloud<Point>())
 {
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -25,14 +25,9 @@ Cloud::~Cloud()
     glDeleteTextures(1, &texture);
 }
 
-void Cloud::reserve(unsigned int n)
-{
-    points.reserve(n);
-}
-
 void Cloud::add(const Point &point)
 {
-    points.push_back(point);
+    points->push_back(point);
     dlist_dirty = true;
 }
 
@@ -43,17 +38,19 @@ void Cloud::set_texture_data(unsigned int width, unsigned int height, const GLvo
                  0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, pixels);
 }
 
+void Cloud::transform(const mat4 &trans)
+{
+    auto etrans = Eigen::Matrix4f(value_ptr(trans));
+    transformPointCloud(*points, *points, etrans);
+    dlist_dirty = true;
+}
+
 void Cloud::draw()
 {
     update_dlist();
 
     glEnable(GL_TEXTURE_2D);
-    glPushMatrix();
-    auto scaled = scale_slow(transform, scale);
-    auto trans = translate(scaled, offset);
-    glMultMatrixf(value_ptr(trans));
     glCallList(dlist);
-    glPopMatrix();
 }
 
 void Cloud::update_dlist(void)
@@ -68,10 +65,10 @@ void Cloud::update_dlist(void)
     glNewList(dlist, GL_COMPILE);
     glBindTexture(GL_TEXTURE_2D, texture);
     glBegin(GL_POINTS);
-    for (auto point : points)
+    for (auto point : *points)
     {
-        glTexCoord2fv(value_ptr(point.texcoord));
-        glVertex3fv(value_ptr(point.position));
+        glTexCoord2f(point.u, point.v);
+        glVertex3f(point.x, point.y, point.z);
     }
     glEnd();
     glEndList();
