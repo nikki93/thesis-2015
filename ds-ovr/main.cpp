@@ -7,7 +7,7 @@
 #include "ds.h"
 #include "cloud.h"
 
-static bool update_offset()
+static bool update_transform()
 {
     auto state = SDL_GetKeyboardState(nullptr);
     float amount = 0.001;
@@ -50,6 +50,18 @@ static bool update_offset()
         Cloud::offset = vec3(0, 0, 0);
         return true;
     }
+
+    if (state[SDL_SCANCODE_Q])
+    {
+        Cloud::scale *= 1.1;
+        return true;
+    }
+    if (state[SDL_SCANCODE_E])
+    {
+        Cloud::scale /= 1.1;
+        return false;
+    }
+
     return false;
 }
 
@@ -67,9 +79,12 @@ int main(int argc, char **argv)
         game.loop([&]()
         {
             scene.update();
-            if (update_offset())
+            if (update_transform()) {
                 std::cout << "offset: " << Cloud::offset.x << ", "
-                << Cloud::offset.y << ", " << Cloud::offset.z << std::endl;
+                    << Cloud::offset.y << ", " << Cloud::offset.z << std::endl;
+                std::cout << "scale: " << Cloud::scale.x << ", "
+                    << Cloud::scale.y << ", " << Cloud::scale.z << std::endl;
+            }
         },
             [&]()
         {

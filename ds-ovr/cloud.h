@@ -23,6 +23,7 @@ public:
     void draw() const;
 
     static vec3 offset;
+    static vec3 scale;
 };
 
 #endif

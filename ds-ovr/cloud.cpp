@@ -3,6 +3,7 @@
 #include <glm/gtc/matrix_transform.inl>
 
 vec3 Cloud::offset = vec3(0, 0, -0.49);
+vec3 Cloud::scale = vec3(1, 1, 1);
 
 Cloud::Cloud(const mat4 &trans)
     : transform(trans)
@@ -42,7 +43,8 @@ void Cloud::draw() const
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texture);
     glPushMatrix();
-    auto trans = translate(transform, offset);
+    auto scaled = scale_slow(transform, scale);
+    auto trans = translate(scaled, offset);
     glMultMatrixf(value_ptr(trans));
     glBegin(GL_POINTS);
     for (auto point : points)
