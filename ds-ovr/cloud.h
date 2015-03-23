@@ -9,7 +9,6 @@
 class Cloud
 {
     std::vector<Point> points;
-    mat4 transform;
     GLuint texture;
     GLuint dlist;
     bool dlist_dirty;
@@ -26,8 +25,11 @@ public:
     void set_texture_data(unsigned int width, unsigned int height, const GLvoid *pixels);
     void draw();
 
+    const std::vector<Point> &get_points(void) { return points; }
+
     static vec3 offset;
     static vec3 scale;
+    mat4 transform;
 };
 
 #endif
