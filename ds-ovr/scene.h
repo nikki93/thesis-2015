@@ -23,7 +23,7 @@ private:
     float m_dist = 2;
     vec2 m_prev_mouse;
 
-    std::list<std::shared_ptr<Cloud>> clouds;
+    Cloud main_cloud;
 };
 
 #endif

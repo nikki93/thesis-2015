@@ -5,7 +5,7 @@
 
 void Scene::add_cloud(std::shared_ptr<Cloud> cloud)
 {
-    clouds.push_back(cloud);
+    main_cloud.merge(cloud);
 }
 
 void Scene::update(void)
@@ -35,7 +35,6 @@ void Scene::draw(std::shared_ptr<Cloud> cloud)
 
     // clouds
     cloud->draw();
-    for (auto &c : clouds)
-        c->draw();
+    main_cloud.draw();
 }
 
