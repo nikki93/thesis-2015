@@ -30,6 +30,7 @@ DS::DS() :
     // change exposure, gain
     if (auto hardware = m_api->accessHardware())
     {
+        hardware->setAutoExposure(DS_BOTH_IMAGERS, false);
         error_assert(hardware->setImagerExposure(16.3f, DS_BOTH_IMAGERS));
         error_assert(hardware->setImagerGain(2.0f, DS_BOTH_IMAGERS));
     }
@@ -55,8 +56,10 @@ std::shared_ptr<Cloud> DS::cloud(const VR &vr)
     auto width = m_api->zWidth(), height = m_api->zHeight();
 
     auto cloud = std::make_shared<Cloud>();
-    cloud->set_texture_data(m_third->thirdWidth(), m_third->thirdHeight(),
-                           m_third->getThirdImage());
+    //cloud->set_texture_data(m_third->thirdwidth(), m_third->thirdheight(),
+    //                       m_third->getthirdimage());
+    auto texture = (uint8_t *) m_third->getThirdImage();
+    auto t_width = m_third->thirdWidth(), t_height = m_third->thirdHeight();
     for (float j = 0; j < height; ++j)
         for (float i = 0; i < width; ++i)
             if (auto d = *img++)
@@ -65,15 +68,23 @@ std::shared_ptr<Cloud> DS::cloud(const VR &vr)
                 DSTransformFromZImageToZCamera(z_intrin, z_img, z_camera);
                 DSTransformFromZCameraToRectThirdCamera(t_trans, z_camera, t_camera);
                 DSTransformFromThirdCameraToRectThirdImage(t_intrin, t_camera, t_image);
-                cloud->add(Point(vec3(
-                    z_camera[0] / 360,
-                    -z_camera[1] / 360,
-                    -z_camera[2] / 360
-                    ),
-                    vec2(
-                    t_image[0] / t_intrin.rw,
-                    t_image[1] / t_intrin.rh
-                    )));
+
+                Point p;
+                p.x = z_camera[0] / 360;
+                p.y = -z_camera[1] / 360;
+                p.z = -z_camera[2] / 360;
+
+                float u = t_image[0] / t_intrin.rw, v = t_image[1] / t_intrin.rh;
+                unsigned int imgx = t_width * u, imgy = t_height * v;
+                if (imgx >= t_width) imgx = t_width;
+                if (imgy >= t_height) imgy = t_height;
+                uint8_t *pix = &texture[4 * (imgx + t_width * imgy)];
+                p.b = pix[0] * (1.0f/255.0f);
+                p.g = pix[1] * (1.0f/255.0f);
+                p.r = pix[2] * (1.0f/255.0f);
+                p.a = 1.0f;
+
+                cloud->add(p);
             }
     auto trans = translate(vr.eye_transforms(true)[0], vec3(0, 0, 0));
     cloud->transform(trans);
