@@ -77,6 +77,7 @@ int main(int argc, char **argv)
         DS ds;
 
         game.loop([&]()
+        game.loop([&](float dt)
         {
             scene.update();
             if (update_transform()) {

@@ -39,16 +39,20 @@ Game::~Game()
     SDL_Quit();
 }
 
-void Game::loop(const std::function<void(void)> &update,
+void Game::loop(const std::function<void(float)> &update,
                 const std::function<void(void)> &draw,
                 const std::function<void(const SDL_Event &)> &ev)
 {
+    int last_ticks = SDL_GetTicks();
+
     while (!m_quit)
     {
         events(ev);
 
-        update();
+        int current_ticks = SDL_GetTicks();
+        update(0.001 * (current_ticks - last_ticks));
         update_fps();
+        last_ticks = current_ticks;
 
         draw();
     }

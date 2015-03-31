@@ -15,7 +15,7 @@ public:
     ~Game();
 
     // run game, calling event handlers
-    void loop(const std::function<void(void)> &update,
+    void loop(const std::function<void(float)> &update,
               const std::function<void(void)> &draw,
               const std::function<void(const SDL_Event &)> &ev);
 
