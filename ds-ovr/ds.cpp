@@ -70,9 +70,9 @@ std::shared_ptr<Cloud> DS::cloud(const VR &vr)
                 DSTransformFromThirdCameraToRectThirdImage(t_intrin, t_camera, t_image);
 
                 Point p;
-                p.x = z_camera[0] / 360;
-                p.y = -z_camera[1] / 360;
-                p.z = -z_camera[2] / 360;
+                p.x = DSConvertZUnitsToM(z_camera[0], m_api->getZUnits());
+                p.y = -DSConvertZUnitsToM(z_camera[1], m_api->getZUnits());
+                p.z = -DSConvertZUnitsToM(z_camera[2], m_api->getZUnits());
 
                 float u = t_image[0] / t_intrin.rw, v = t_image[1] / t_intrin.rh;
                 unsigned int imgx = t_width * u, imgy = t_height * v;
