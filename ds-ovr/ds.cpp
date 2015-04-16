@@ -44,7 +44,12 @@ DS::~DS()
     DSDestroy(m_api);
 }
 
-std::shared_ptr<Cloud> DS::cloud(const VR &vr)
+static double unit_random(void)
+{
+    return ((double) rand()) / RAND_MAX;
+}
+
+std::shared_ptr<Cloud> DS::cloud(const VR &vr, float factor)
 {
     error_assert(m_api->grab());
     DSCalibIntrinsicsRectified z_intrin, t_intrin;
@@ -64,6 +69,9 @@ std::shared_ptr<Cloud> DS::cloud(const VR &vr)
         for (float i = 0; i < width; ++i)
             if (auto d = *img++)
             {
+                if (factor < 1 && unit_random() > factor)
+                    continue;
+
                 float z_img[]{ i, j, d }, z_camera[3], t_camera[3], t_image[2];
                 DSTransformFromZImageToZCamera(z_intrin, z_img, z_camera);
                 DSTransformFromZCameraToRectThirdCamera(t_trans, z_camera, t_camera);

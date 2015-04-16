@@ -67,6 +67,8 @@ static bool update_transform()
 
 int main(int argc, char **argv)
 {
+    srand(time(nullptr));
+
     try
     {
         VR::preinit();
@@ -75,12 +77,21 @@ int main(int argc, char **argv)
         VR vr(game);
         Scene scene;
         DS ds;
+        float elapsed = 0;
 
-        game.loop([&]()
         game.loop([&](float dt)
         {
+            elapsed += dt;
+            if (elapsed > 0.1
+                && SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_Z])
+            {
+                scene.add_cloud(ds.cloud(vr, 0.03));
+                elapsed = 0;
+            }
+
             scene.update();
-            if (update_transform()) {
+            if (update_transform())
+            {
                 std::cout << "offset: " << Cloud::offset.x << ", "
                     << Cloud::offset.y << ", " << Cloud::offset.z << std::endl;
                 std::cout << "scale: " << Cloud::scale.x << ", "
