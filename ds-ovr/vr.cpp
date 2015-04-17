@@ -28,6 +28,14 @@ void VR::preinit()
     ovr_Initialize();
 }
 
+void VR::orient_window(Game &game) const
+{
+    SDL_SetWindowSize(game.window(), m_hmd->Resolution.w, m_hmd->Resolution.h);
+    SDL_SetWindowPosition(game.window(),
+                          m_hmd->WindowsPos.x, m_hmd->WindowsPos.y);
+    SDL_SetWindowFullscreen(game.window(), SDL_WINDOW_FULLSCREEN_DESKTOP);
+}
+
 VR::VR(Game &game)
 {
     // create HMD
@@ -38,12 +46,7 @@ VR::VR(Game &game)
         if (!(m_hmd = ovrHmd_CreateDebug(ovrHmd_DK2)))
             throw Error("couldn't create debug HMD");
     }
-
-    // set window resolution
-    SDL_SetWindowSize(game.window(), m_hmd->Resolution.w, m_hmd->Resolution.h);
-    SDL_SetWindowPosition(game.window(),
-                          m_hmd->WindowsPos.x, m_hmd->WindowsPos.y);
-    SDL_SetWindowFullscreen(game.window(), SDL_WINDOW_FULLSCREEN_DESKTOP);
+    orient_window(game);
 
     // enable position, rotation tracking
     ovrHmd_ConfigureTracking(m_hmd, ovrTrackingCap_Orientation

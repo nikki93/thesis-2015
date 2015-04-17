@@ -21,6 +21,7 @@ public:
     explicit VR(Game &game);
     ~VR();
 
+    void orient_window(Game &game) const; // set window position, resolution
     void draw(const std::function<void(void)> &drawer) const;
     inline void recenter(void) const { ovrHmd_RecenterPose(m_hmd); }
 

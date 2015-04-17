@@ -78,6 +78,7 @@ int main(int argc, char **argv)
         Scene scene;
         DS ds;
         float elapsed = 0;
+        bool fullscreen = true;
 
         game.loop([&](float dt)
         {
@@ -116,6 +117,16 @@ int main(int argc, char **argv)
 
                 case SDLK_c:
                     scene.add_cloud(ds.cloud(vr));
+                    break;
+
+                case SDLK_i:
+                    if ((fullscreen = !fullscreen))
+                        vr.orient_window(game);
+                    else
+                    {
+                        SDL_SetWindowPosition(game.window(), 100, 100);
+                        SDL_SetWindowFullscreen(game.window(), 0);
+                    }
                     break;
                 }
             }
