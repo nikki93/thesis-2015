@@ -109,7 +109,7 @@ int main(int argc, char **argv)
         {
             switch (ev.type)
             {
-            case SDL_KEYDOWN: case SDL_KEYUP:
+            case SDL_KEYDOWN:
                 switch (ev.key.keysym.sym)
                 {
                 case SDLK_SPACE:
