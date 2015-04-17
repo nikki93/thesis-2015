@@ -79,6 +79,7 @@ int main(int argc, char **argv)
         DS ds;
         float elapsed = 0;
         bool fullscreen = true;
+        bool preview = true;
 
         game.loop([&](float dt)
         {
@@ -101,7 +102,7 @@ int main(int argc, char **argv)
         },
             [&]()
         {
-            auto cloud = ds.cloud(vr);
+            auto cloud = preview ? ds.cloud(vr) : nullptr;
             vr.draw([&]() { scene.draw(cloud); });
         },
             [&](const SDL_Event &ev)
@@ -127,6 +128,10 @@ int main(int argc, char **argv)
                         SDL_SetWindowPosition(game.window(), 100, 100);
                         SDL_SetWindowFullscreen(game.window(), 0);
                     }
+                    break;
+
+                case SDLK_p:
+                    preview = !preview;
                     break;
                 }
             }

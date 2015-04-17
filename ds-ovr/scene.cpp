@@ -34,7 +34,8 @@ void Scene::draw(std::shared_ptr<Cloud> cloud)
     glTranslatef(0, 0, 2);
 
     // clouds
-    cloud->draw();
+    if (cloud)
+        cloud->draw();
     main_cloud.draw();
 }
 
