@@ -35,7 +35,20 @@ void Scene::draw(std::shared_ptr<Cloud> cloud)
 
     // clouds
     if (cloud)
+    {
         cloud->draw();
+        if (cloud->has_finger)
+        {
+            printf("has finger!\n");
+            glLineWidth(2.5);
+            glColor3f(1.0, 0.0, 0.0);
+            glBegin(GL_LINES);
+            glVertex3fv(value_ptr(cloud->finger));
+            auto end = cloud->finger + vec3(0, 0.2, 0);
+            glVertex3fv(value_ptr(end));
+            glEnd();
+        }
+    }
     main_cloud.draw();
 }
 

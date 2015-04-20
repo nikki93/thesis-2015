@@ -80,6 +80,7 @@ int main(int argc, char **argv)
         float elapsed = 0;
         bool fullscreen = true;
         bool preview = true;
+        std::shared_ptr<Cloud> curr_cloud = nullptr;
 
         game.loop([&](float dt)
         {
@@ -87,9 +88,11 @@ int main(int argc, char **argv)
             if (elapsed > 0.1
                 && SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_Z])
             {
-                scene.add_cloud(ds.cloud(vr, 0.03));
+                scene.add_cloud(ds.cloud(vr, 0.01));
                 elapsed = 0;
             }
+
+            curr_cloud = ds.cloud(vr);
 
             scene.update();
             if (update_transform())
@@ -102,8 +105,7 @@ int main(int argc, char **argv)
         },
             [&]()
         {
-            auto cloud = preview ? ds.cloud(vr) : nullptr;
-            vr.draw([&]() { scene.draw(cloud); });
+            vr.draw([&]() { scene.draw(preview ? curr_cloud : nullptr); });
         },
             [&](const SDL_Event &ev)
         {
@@ -117,7 +119,7 @@ int main(int argc, char **argv)
                     break;
 
                 case SDLK_c:
-                    scene.add_cloud(ds.cloud(vr));
+                    scene.add_cloud(curr_cloud);
                     break;
 
                 case SDLK_i:

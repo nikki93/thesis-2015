@@ -18,11 +18,16 @@ public:
     Cloud();
     ~Cloud();
 
+    void resize(unsigned int n);
     void add(const Point &point);
     void merge(std::shared_ptr<Cloud> other);
+    void register_merge(std::shared_ptr<Cloud> other);
 
     void transform(const mat4 &trans);
     void draw();
+
+    vec3 finger;
+    bool has_finger;
 
     static vec3 offset;
     static vec3 scale;

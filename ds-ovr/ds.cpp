@@ -61,8 +61,6 @@ std::shared_ptr<Cloud> DS::cloud(const VR &vr, float factor)
     auto width = m_api->zWidth(), height = m_api->zHeight();
 
     auto cloud = std::make_shared<Cloud>();
-    //cloud->set_texture_data(m_third->thirdwidth(), m_third->thirdheight(),
-    //                       m_third->getthirdimage());
     auto texture = (uint8_t *) m_third->getThirdImage();
     auto t_width = m_third->thirdWidth(), t_height = m_third->thirdHeight();
     for (float j = 0; j < height; ++j)
@@ -82,6 +80,15 @@ std::shared_ptr<Cloud> DS::cloud(const VR &vr, float factor)
                 p.y = -DSConvertZUnitsToM(z_camera[1], m_api->getZUnits());
                 p.z = -DSConvertZUnitsToM(z_camera[2], m_api->getZUnits());
 
+                if (p.z > -0.7)
+                {
+                    if (!cloud->has_finger || cloud->finger.y < p.y)
+                    {
+                        cloud->finger = vec3(p.x, p.y, p.z);
+                        cloud->has_finger = true;
+                    }
+                }
+
                 float u = t_image[0] / t_intrin.rw, v = t_image[1] / t_intrin.rh;
                 unsigned int imgx = t_width * u, imgy = t_height * v;
                 if (imgx >= t_width) imgx = t_width;
@@ -94,7 +101,7 @@ std::shared_ptr<Cloud> DS::cloud(const VR &vr, float factor)
 
                 cloud->add(p);
             }
-    auto trans = translate(vr.eye_transforms(true)[0], vec3(0, 0, 0));
+    auto trans = translate(vr.eye_transforms(true)[0], vec3(0));
     cloud->transform(trans);
     return cloud;
 }
