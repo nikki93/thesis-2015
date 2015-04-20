@@ -55,8 +55,7 @@ void Cloud::update_dlist(void)
     glBegin(GL_POINTS);
     for (auto point : *points)
     {
-        //glColor3f(point.r, point.g, point.b);
-        glColor3f(1, 1, 1);
+        glColor3f(point.r / 255.f, point.g / 255.f, point.b / 255.f);
         glVertex3f(point.x, point.y, point.z);
     }
     glEnd();
