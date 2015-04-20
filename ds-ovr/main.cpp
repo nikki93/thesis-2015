@@ -133,6 +133,10 @@ int main(int argc, char **argv)
                 case SDLK_p:
                     preview = !preview;
                     break;
+
+                case SDLK_r:
+                    scene.reset_view();
+                    break;
                 }
             }
         });

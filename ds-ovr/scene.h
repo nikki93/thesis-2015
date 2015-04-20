@@ -17,6 +17,13 @@ public:
     void update(void);
     void draw(std::shared_ptr<Cloud> cloud);
 
+    void reset_view(void)
+    {
+        m_yaw = 0;
+        m_pitch = 0;
+        m_dist = 2;
+    }
+
 private:
     float m_yaw = 0;
     float m_pitch = 0;
