@@ -49,7 +49,7 @@ static double unit_random(void)
     return ((double) rand()) / RAND_MAX;
 }
 
-std::shared_ptr<Cloud> DS::cloud(const VR &vr, float factor)
+std::shared_ptr<Cloud> DS::cloud(const VR &vr, bool hand, float factor)
 {
     error_assert(m_api->grab());
     DSCalibIntrinsicsRectified z_intrin, t_intrin;
@@ -88,15 +88,26 @@ std::shared_ptr<Cloud> DS::cloud(const VR &vr, float factor)
                         cloud->has_finger = true;
                     }
                 }
+                else if (hand)
+                    continue;
 
                 float u = t_image[0] / t_intrin.rw, v = t_image[1] / t_intrin.rh;
                 unsigned int imgx = t_width * u, imgy = t_height * v;
                 if (imgx >= t_width) imgx = t_width;
                 if (imgy >= t_height) imgy = t_height;
                 uint8_t *pix = &texture[4 * (imgx + t_width * imgy)];
-                p.b = pix[0];
-                p.g = pix[1];
-                p.r = pix[2];
+                if (hand)
+                {
+                    p.b = 0;
+                    p.g = 255;
+                    p.r = 0;
+                }
+                else
+                {
+                    p.b = pix[0];
+                    p.g = pix[1];
+                    p.r = pix[2];
+                }
                 p.a = 1.0f;
 
                 cloud->add(p);

@@ -34,12 +34,12 @@ void Scene::draw(std::shared_ptr<Cloud> cloud)
     glTranslatef(0, 0, 2);
 
     // clouds
+    main_cloud.draw();
     if (cloud)
     {
         cloud->draw();
         if (cloud->has_finger)
         {
-            printf("has finger!\n");
             glLineWidth(2.5);
             glColor3f(1.0, 0.0, 0.0);
             glBegin(GL_LINES);
@@ -49,6 +49,5 @@ void Scene::draw(std::shared_ptr<Cloud> cloud)
             glEnd();
         }
     }
-    main_cloud.draw();
 }
 

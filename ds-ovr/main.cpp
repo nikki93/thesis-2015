@@ -80,19 +80,26 @@ int main(int argc, char **argv)
         float elapsed = 0;
         bool fullscreen = true;
         bool preview = true;
+        bool hand = false;
         std::shared_ptr<Cloud> curr_cloud = nullptr;
 
         game.loop([&](float dt)
         {
+            auto keys = SDL_GetKeyboardState(nullptr);
             elapsed += dt;
-            if (elapsed > 0.1
-                && SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_Z])
+            if (elapsed > 0.1 && keys[SDL_SCANCODE_Z])
             {
                 scene.add_cloud(ds.cloud(vr, 0.01));
                 elapsed = 0;
             }
 
-            curr_cloud = ds.cloud(vr);
+            curr_cloud = ds.cloud(vr, hand);
+
+            if (curr_cloud->has_finger && keys[SDL_SCANCODE_J])
+            {
+                vec3 origin = (vr.eye_transforms(false)[0] * vec4(0, 0, 0, 1)).xyz;
+                scene.main_cloud.paint(origin, curr_cloud->finger);
+            }
 
             scene.update();
             if (update_transform())
@@ -134,6 +141,9 @@ int main(int argc, char **argv)
 
                 case SDLK_p:
                     preview = !preview;
+                    break;
+                case SDLK_h:
+                    hand = !hand;
                     break;
 
                 case SDLK_r:

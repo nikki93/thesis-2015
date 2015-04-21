@@ -6,9 +6,15 @@
 vec3 Cloud::offset = vec3(0, 0, -0.49);
 vec3 Cloud::scale = vec3(1, 1, 1);
 
-Cloud::Cloud()
-    : dlist(0), dirty(true), points(new pcl::PointCloud<Point>()), has_finger(false)
+Cloud::Cloud(bool make_octree)
+    : dlist(0), dirty(true), points(new pcl::PointCloud<Point>()), has_finger(false), octree(nullptr)
 {
+    if (make_octree)
+    {
+        octree.reset(new pcl::octree::OctreePointCloudSearch<Point>(0.012));
+        octree->setInputCloud(points);
+        octree->addPointsFromInputCloud();
+    }
     update_dlist();
 }
 
@@ -25,13 +31,20 @@ void Cloud::resize(unsigned int n)
 
 void Cloud::add(const Point &point)
 {
-    points->push_back(point);
+    if (octree)
+        octree->addPointToCloud(point, points);
+    else
+        points->push_back(point);
     dirty = true;
 }
 
 void Cloud::merge(std::shared_ptr<Cloud> other)
 {
-    *points += *other->points;
+    if (octree)
+        for (auto &point : *(other->points))
+            octree->addPointToCloud(point, points);
+    else
+        *points += *other->points;
     dirty = true;
 }
 
@@ -65,8 +78,25 @@ void Cloud::transform(const mat4 &trans)
 
 void Cloud::draw()
 {
-    update_dlist();
-    glCallList(dlist);
+    glBegin(GL_POINTS);
+    for (auto &point : *points)
+    {
+        glColor3ub(point.r, point.g, point.b);
+        glVertex3f(point.x, point.y, point.z);
+    }
+    glEnd();
+    glEnableClientState(GL_VERTEX_ARRAY);
+    return;
+
+    //glEnableClientState(GL_COLOR_ARRAY);
+
+    glColor3f(1, 1, 1);
+    glVertexPointer(3, GL_FLOAT, sizeof(Point), &((*points)[0].x));
+    //glColorPointer(3, GL_UNSIGNED_BYTE, sizeof(Point), &((*points)[0].b));
+    glDrawArrays(GL_POINT, 0, points->size());
+
+    glDisableClientState(GL_VERTEX_ARRAY);
+    //glDisableClientState(GL_COLOR_ARRAY);
 }
 
 void Cloud::update_dlist(void)
@@ -80,9 +110,9 @@ void Cloud::update_dlist(void)
     dlist = glGenLists(1);
     glNewList(dlist, GL_COMPILE);
     glBegin(GL_POINTS);
-    for (auto point : *points)
+    for (auto &point : *points)
     {
-        glColor3f(point.r / 255.f, point.g / 255.f, point.b / 255.f);
+        glColor3ub(point.r, point.g, point.b);
         glVertex3f(point.x, point.y, point.z);
     }
     glEnd();

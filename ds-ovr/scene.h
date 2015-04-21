@@ -12,6 +12,8 @@ class Game;
 class Scene
 {
 public:
+    Scene() : main_cloud(true) {}
+
     void add_cloud(std::shared_ptr<Cloud> cloud);
 
     void update(void);
@@ -24,13 +26,13 @@ public:
         m_dist = 2;
     }
 
+    Cloud main_cloud;
+
 private:
     float m_yaw = 0;
     float m_pitch = 0;
     float m_dist = 2;
     vec2 m_prev_mouse;
-
-    Cloud main_cloud;
 };
 
 #endif

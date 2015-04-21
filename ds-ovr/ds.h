@@ -13,7 +13,7 @@ public:
     DS();
     ~DS();
 
-    std::shared_ptr<Cloud> cloud(const VR &vr, float factor = 2);
+    std::shared_ptr<Cloud> cloud(const VR &vr, bool hand = false, float factor = 2);
 
 private:
     DSAPI *m_api;
