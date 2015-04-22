@@ -31,6 +31,7 @@ Game::Game(int argc, char **argv) :
     glEnable(GL_CULL_FACE);
     glEnable(GL_NORMALIZE);
     glClearColor(0.1f, 0.1f, 0.1f, 1);
+    glDisable(GL_CULL_FACE);
 }
 
 Game::~Game()

@@ -6,19 +6,25 @@
 #include <pcl/point_types.h>
 #include <pcl/registration/icp.h>
 #include <pcl/octree/octree.h>
+#include <pcl/kdtree/kdtree_flann.h>
+#include <pcl/features/normal_3d.h>
+#include <pcl/surface/gp3.h>
 
 #include "point.h"
 
 class Cloud
 {
     pcl::PointCloud<Point>::Ptr points;
-    pcl::octree::OctreePointCloudSearch<Point>::Ptr octree;
-    GLuint dlist;
-    bool dirty;
+    pcl::octree::OctreePointCloudSearch<Point>::Ptr octree = nullptr;
+    GLuint dlist = 0;
+    bool dirty = true;
 
 public:
-    Cloud(bool make_octree = false);
+    Cloud(bool mk_octree = false);
     ~Cloud();
+
+    void make_octree(void);
+    void make_mesh(void);
 
     void resize(unsigned int n);
     void add(const Point &point);
@@ -63,7 +69,10 @@ public:
     }
 
     vec3 finger;
-    bool has_finger;
+    bool has_finger = false;
+
+    pcl::PolygonMesh::Ptr mesh = nullptr;
+    pcl::PointCloud<Point>::Ptr mesh_cloud = nullptr;
 
     static vec3 offset;
     static vec3 scale;

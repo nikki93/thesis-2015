@@ -149,6 +149,10 @@ int main(int argc, char **argv)
                 case SDLK_r:
                     scene.reset_view();
                     break;
+
+                case SDLK_m:
+                    scene.main_cloud.make_mesh();
+                    break;
                 }
             }
         });
