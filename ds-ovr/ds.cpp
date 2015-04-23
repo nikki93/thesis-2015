@@ -63,6 +63,25 @@ std::shared_ptr<Cloud> DS::cloud(const VR &vr, bool hand, float factor)
     auto cloud = std::make_shared<Cloud>();
     auto texture = (uint8_t *) m_third->getThirdImage();
     auto t_width = m_third->thirdWidth(), t_height = m_third->thirdHeight();
+
+    //Point p;
+    //p.x = 0;
+    //p.y = 0;
+    //p.z = -0.8;
+    //p.r = 0;
+    //p.g = 255;
+    //p.b = 0;
+    //for (float j = 0; j < 10; ++j)
+    //{
+    //    p.x = 0.01 * j - 0.05;
+    //    p.y = 0;
+    //    cloud->add(p);
+
+    //    p.y = 0.01 * j - 0.05;
+    //    p.x = 0;
+    //    cloud->add(p);
+    //}
+
     for (float j = 0; j < height; ++j)
         for (float i = 0; i < width; ++i)
             if (auto d = *img++)
@@ -76,9 +95,9 @@ std::shared_ptr<Cloud> DS::cloud(const VR &vr, bool hand, float factor)
                 DSTransformFromThirdCameraToRectThirdImage(t_intrin, t_camera, t_image);
 
                 Point p;
-                p.x = DSConvertZUnitsToM(z_camera[0], m_api->getZUnits());
+                p.x = DSConvertZUnitsToM(z_camera[0], m_api->getZUnits()) - 0.06;
                 p.y = -DSConvertZUnitsToM(z_camera[1], m_api->getZUnits());
-                p.z = -DSConvertZUnitsToM(z_camera[2], m_api->getZUnits());
+                p.z = -DSConvertZUnitsToM(z_camera[2], m_api->getZUnits()) + 0.03;
 
                 if (p.z > -0.7)
                 {
@@ -112,7 +131,7 @@ std::shared_ptr<Cloud> DS::cloud(const VR &vr, bool hand, float factor)
 
                 cloud->add(p);
             }
-    auto trans = translate(vr.eye_transforms(true)[0], vec3(0));
+    auto trans = translate(vr.eye_transforms(true)[0], vec3(0, 0, -0.04));
     cloud->transform(trans);
     return cloud;
 }
